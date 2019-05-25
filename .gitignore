@@ -1,0 +1,5 @@
+.idea
+.metals
+target/
+project/*
+!project/build.properties
