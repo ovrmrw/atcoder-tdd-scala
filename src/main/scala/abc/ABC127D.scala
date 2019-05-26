@@ -4,10 +4,9 @@ package abc.ABC127D
 // SUBMIT THE CODE BELOW
 /////////////////////////////////////////////////
 
+import java.util.Scanner
+
 object Main {
-
-  import java.util.Scanner
-
   def main(args: Array[String]): Unit = {
     val sc = new Scanner(System.in)
     val writer = new java.io.PrintWriter(System.out)

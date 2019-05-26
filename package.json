@@ -1,0 +1,24 @@
+{
+  "name": "atcoder-tdd-scala",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "node scripts/generate-files"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovrmrw/atcoder-tdd-scala.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/ovrmrw/atcoder-tdd-scala/issues"
+  },
+  "homepage": "https://github.com/ovrmrw/atcoder-tdd-scala#readme",
+  "devDependencies": {
+    "@types/node": "10.14.7",
+    "prettier": "1.17.1"
+  }
+}

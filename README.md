@@ -40,6 +40,24 @@ val json =
 
 の JSON 文字列部分は、テストファイルの上部にある JavaScript を実行して取得した値をペーストする。
 
-## TODO
+---
 
-- コマンドでファイルを生成するようにする。
+## ファイル生成
+
+### Setup
+
+```
+$ npm install
+```
+
+### Generate
+
+```
+$ npm run generate -- {package} {contest}
+```
+
+(例: AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき)
+
+```
+$ npm run generate -- abc abc128
+```

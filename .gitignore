@@ -4,3 +4,5 @@
 target/
 project/*
 !project/build.properties
+
+node_modules
