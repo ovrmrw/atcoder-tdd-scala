@@ -1,4 +1,4 @@
-name := "atcoder-scala"
+name := "atcoder-tdd-scala"
 
 version := "0.1"
 

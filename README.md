@@ -1,4 +1,4 @@
-# atcoder-scala
+# atcoder-tdd-scala
 
 AtCoder の問題を Scala で解くときの TDD テンプレート
 
@@ -16,9 +16,13 @@ AtCoder の問題を Scala で解くときの TDD テンプレート
 
 ## テスト
 
+### testWrapper メソッド
+
+テストの実行部分を抽象化している。何も変更する必要はない。
+
 ### テストのウォッチ
 
-テストファイルにもコメントで記述しているが、`export LOCAL_DEBUG=1 && sbt "~testOnly *abc.ABC127*"` のようなコマンドをターミナルで実行することでファイル変更の度にテストが実行される。
+テストファイルにもコメントで記述しているが、`export LOCAL_DEBUG=1 && sbt "~testOnly *abc.ABC127Test"` のようなコマンドをターミナルで実行することでファイル変更の度にテストが実行される。
 
 - `testOnly` ... 特定ファイルのみテストを実行する。
 - `~` ... ファイル変更の度にコマンドを実行する。
