@@ -1,7 +1,8 @@
-package abc.ABC127D
+package abc127.ABC127_D
 
 /////////////////////////////////////////////////
-// SUBMIT THE CODE BELOW
+// Integer Cards
+// (submit the code below)
 /////////////////////////////////////////////////
 
 import java.util.Scanner

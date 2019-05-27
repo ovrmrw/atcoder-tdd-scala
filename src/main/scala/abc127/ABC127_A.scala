@@ -1,7 +1,7 @@
-package {{CATEGORY_PACKAGE}}.{{TASK_PACKAGE}}
+package abc127.ABC127_A
 
 /////////////////////////////////////////////////
-// {{TASK_TITLE}}
+// Ferris Wheel
 // (submit the code below)
 /////////////////////////////////////////////////
 
@@ -16,7 +16,16 @@ object Main {
   }
 
   def solve(sc: Scanner): String = {
-    "fakeOutput"
+    val (a, b) = (sc.nextInt(), sc.nextInt())
+    debug(a, b)
+
+    (if (a >= 13) {
+      b
+    } else if (a >= 6 && a <= 12) {
+      b / 2
+    } else {
+      0
+    }).toString
   }
 
   private def debug(x: Any): Unit = {

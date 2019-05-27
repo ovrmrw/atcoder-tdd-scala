@@ -2,7 +2,6 @@ package {{CATEGORY_PACKAGE}}
 
 import java.util.Scanner
 
-import common.enums._
 import common.helpers.{mockScanner, runCustomTest}
 import org.scalatest.FunSpec
 import org.scalatest.concurrent.TimeLimitedTests
@@ -23,47 +22,17 @@ import org.scalatest.time.SpanSugar._
   * Run the command below in your terminal for the continual TDD experience.
   * export LOCAL_DEBUG=1 && sbt "~testOnly *{{CATEGORY_PACKAGE}}.{{TEST_CLASS}}"
   * Or only the specific test case.
-  * export LOCAL_DEBUG=1 && sbt "~testOnly *{{CATEGORY_PACKAGE}}.{{TEST_CLASS}} -- -z TaskA"
+  * export LOCAL_DEBUG=1 && sbt "~testOnly *{{CATEGORY_PACKAGE}}.{{TEST_CLASS}} -- -z {{FIRST_TASK_NAME}}"
   */
 class {{TEST_CLASS}} extends FunSpec with TimeLimitedTests {
   val timeLimit = 2000 millis
 
-  describe(TaskA.toString) {
-    val json =
-      """
-        |[["fakeInput","fakeOutput"]]
-      """.stripMargin
-    testWrapper(TaskA, {{TASK_A_PACKAGE}}.Main.solve, json, Nil)
-  }
+  {{DESCRIBES}}
 
-  describe(TaskB.toString) {
-    val json =
-      """
-        |[["fakeInput","fakeOutput"]]
-      """.stripMargin
-    testWrapper(TaskB, {{TASK_B_PACKAGE}}.Main.solve, json, Nil)
-  }
-
-  describe(TaskC.toString) {
-    val json =
-      """
-        |[["fakeInput","fakeOutput"]]
-      """.stripMargin
-    testWrapper(TaskC, {{TASK_C_PACKAGE}}.Main.solve, json, Nil)
-  }
-
-  describe(TaskD.toString) {
-    val json =
-      """
-        |[["fakeInput","fakeOutput"]]
-      """.stripMargin
-    testWrapper(TaskD, {{TASK_D_PACKAGE}}.Main.solve, json, Nil)
-  }
-
-  def testWrapper(task: Task, solver: Scanner => String, json: String, customParams: List[(String, String)]): Unit = {
+  def testWrapper(task: String, solver: Scanner => String, json: String, customParams: List[(String, String)]): Unit = {
     def test(description: String, input: String, output: String): Unit =
       it(description) {
-        println(s"${this.suiteName}__${task.toString}__$description")
+        println(s"${this.suiteName}__${task}__$description")
         assert(solver(mockScanner(input)) === output)
       }
 

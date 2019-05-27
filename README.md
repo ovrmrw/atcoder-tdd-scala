@@ -6,20 +6,17 @@ AtCoder の問題を Scala で解くときの TDD テンプレート
 
 ## ファイル生成
 
+AtCoder のコンテストページからデータを収集して実装ファイルとテストファイルを生成する。  
+(クローリングのために Chromium をダウンロードするので初回実行は少し時間がかかる)
+
 ```
-$ npm run generate -- {package} {contest}
+$ npm run generate -- {contest page url}
 ```
 
 (例) AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき
 
 ```
-$ npm run generate -- abc abc128
-```
-
-`package` を階層構造にすることも可能
-
-```
-$ npm run generate -- hoge.foo.bar abc128
+$ npm run generate -- https://atcoder.jp/contests/abc128
 ```
 
 ---
@@ -44,7 +41,7 @@ $ npm run generate -- hoge.foo.bar abc128
 
 ### テストのウォッチ
 
-テストファイルにもコメントで記述しているが、`export LOCAL_DEBUG=1 && sbt "~testOnly *abc.ABC127Test"` のようなコマンドをターミナルで実行することでファイル変更の度にテストが実行される。
+テストファイルにもコメントで記述しているが、`export LOCAL_DEBUG=1 && sbt "~testOnly *abc128.ABC128Test -- -z A"` のようなコマンドをターミナルで実行することで、ファイル変更の度に特定のテストケースが実行される。
 
 - `testOnly` ... 特定ファイルのみテストを実行する。
 - `~` ... ファイル変更の度にコマンドを実行する。
@@ -61,3 +58,5 @@ val json =
 ```
 
 の JSON 文字列部分は、テストファイルの上部にある JavaScript を実行して取得した値をペーストする。
+
+ただし `npm run generate` コマンドでファイル生成した場合は何も変更する必要はない。

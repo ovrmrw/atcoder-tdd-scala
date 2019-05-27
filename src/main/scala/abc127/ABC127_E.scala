@@ -1,11 +1,11 @@
-package abc.ABC127B
+package abc127.ABC127_E
 
 /////////////////////////////////////////////////
-// SUBMIT THE CODE BELOW
+// Cell Distance
+// (submit the code below)
 /////////////////////////////////////////////////
 
 import java.util.Scanner
-import scala.collection.mutable.ArrayBuffer
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -16,16 +16,7 @@ object Main {
   }
 
   def solve(sc: Scanner): String = {
-    val (r, d, x) = (sc.nextInt(), sc.nextInt(), sc.nextInt())
-    debug(r, d, x)
-
-    val weightBuf = ArrayBuffer.empty[Int]
-    (1 to 10).foldLeft(x) { (acc, _) =>
-      val w = r * acc - d
-      weightBuf += w
-      w
-    }
-    weightBuf.mkString("\n")
+    "fakeOutput"
   }
 
   private def debug(x: Any): Unit = {

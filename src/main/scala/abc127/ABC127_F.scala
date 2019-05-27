@@ -1,7 +1,8 @@
-package abc.ABC127C
+package abc127.ABC127_F
 
 /////////////////////////////////////////////////
-// SUBMIT THE CODE BELOW
+// Absolute Minima
+// (submit the code below)
 /////////////////////////////////////////////////
 
 import java.util.Scanner
@@ -15,13 +16,7 @@ object Main {
   }
 
   def solve(sc: Scanner): String = {
-    val (n, m) = (sc.nextInt(), sc.nextInt())
-    val gates = IndexedSeq.fill(m)((sc.nextInt(), sc.nextInt()))
-    debug(n, m, gates)
-
-    val leftMax = gates.map { case (l, _) => l }.max
-    val rightMin = gates.map { case (_, r) => r }.min
-    (if (leftMax > rightMin) 0 else rightMin - leftMax + 1).toString
+    "fakeOutput"
   }
 
   private def debug(x: Any): Unit = {

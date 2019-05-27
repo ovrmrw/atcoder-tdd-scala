@@ -1,7 +1,8 @@
-package abc.ABC127A
+package abc127.ABC127_C
 
 /////////////////////////////////////////////////
-// SUBMIT THE CODE BELOW
+// Prison
+// (submit the code below)
 /////////////////////////////////////////////////
 
 import java.util.Scanner
@@ -15,16 +16,13 @@ object Main {
   }
 
   def solve(sc: Scanner): String = {
-    val (a, b) = (sc.nextInt(), sc.nextInt())
-    debug(a, b)
+    val (n, m) = (sc.nextInt(), sc.nextInt())
+    val gates = IndexedSeq.fill(m)((sc.nextInt(), sc.nextInt()))
+    debug(n, m, gates)
 
-    (if (a >= 13) {
-      b
-    } else if (a >= 6 && a <= 12) {
-      b / 2
-    } else {
-      0
-    }).toString
+    val leftMax = gates.map { case (l, _) => l }.max
+    val rightMin = gates.map { case (_, r) => r }.min
+    (if (leftMax > rightMin) 0 else rightMin - leftMax + 1).toString
   }
 
   private def debug(x: Any): Unit = {
