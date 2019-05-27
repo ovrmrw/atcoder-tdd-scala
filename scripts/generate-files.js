@@ -1,12 +1,19 @@
 const fs = require('fs');
 const path = require('path');
+const assert = require('assert');
 const { URL } = require('url');
 const puppeteer = require('puppeteer');
 
-const [, , _url = ''] = process.argv;
-if (!/atcoder\.jp\/contests/.test(_url)) {
-  throw new Error('An AtCoder contest page url must be given.');
+const [atcoderUsername, atcoderPassword] = (process.env.ATCODER || ',').split(',').map(s => s.trim());
+if (!atcoderUsername) {
+  console.log('(!) username is not given.');
 }
+if (!atcoderPassword) {
+  console.log('(!) password is not given.');
+}
+
+const [, , _url = ''] = process.argv;
+assert(/atcoder\.jp\/contests/.test(_url), 'An AtCoder contest page url must be given.');
 
 const taskTopPageUrl = getTaskUrl(_url);
 console.log({ taskTopPageUrl });
@@ -16,7 +23,8 @@ const taskTeamplateSrc = fs.readFileSync(path.join(templateDir, 'task.scala.temp
 const testTeamplateSrc = fs.readFileSync(path.join(templateDir, 'test.scala.template')).toString();
 
 const taskListSelector = 'div#main-container table tbody tr td:nth-child(2) a';
-const inputOutputSelector = 'span.lang-en div.div-btn-copy + pre';
+const inputOutputFirstSelector = 'div#task-statement span.lang-en div.div-btn-copy + pre';
+const inputOutputSecondSelector = 'div#task-statement div.div-btn-copy + pre';
 
 async function main() {
   const results = await crawl();
@@ -92,9 +100,25 @@ async function main() {
 }
 
 async function crawl() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.goto(taskTopPageUrl);
+  if (atcoderUsername && atcoderPassword) {
+    console.log('Getting data with login ...');
+    await page.goto('https://atcoder.jp/login?continue=' + encodeURIComponent(taskTopPageUrl));
+    await page.evaluate(
+      (username, password) => {
+        document.querySelector('input#username').value = username;
+        document.querySelector('input#password').value = password;
+        document.querySelector('button#submit').click();
+      },
+      atcoderUsername,
+      atcoderPassword,
+    );
+    await page.waitForSelector('div#main-container');
+  } else {
+    console.log('Getting data without login ...');
+    await page.goto(taskTopPageUrl);
+  }
   const tasks = await page.evaluate(selector => {
     return Array.from(document.querySelectorAll(selector)).map(el => [el.text, el.href]);
   }, taskListSelector);
@@ -110,18 +134,30 @@ async function crawl() {
 async function getInputOutputFromTaskPage(browser, taskTitle, taskUrl) {
   const subPage = await browser.newPage();
   await subPage.goto(taskUrl);
-  const inputOutput = await subPage.evaluate(selector => {
-    return JSON.stringify(
-      Array.from(document.querySelectorAll(selector))
+  const inputOutput = await subPage.evaluate(
+    (firstSelector, secondSelector) => {
+      let list = Array.from(document.querySelectorAll(firstSelector))
         .map(e => e.innerText)
         .reduce((acc, v, i) => {
           let j = Math.floor(i / 2);
           if (!acc[j]) acc[j] = [];
           acc[j].push(v.trim().replace(/\n/g, '\\n'));
           return acc;
-        }, []),
-    );
-  }, inputOutputSelector);
+        }, []);
+      if (list.length === 0)
+        list = Array.from(document.querySelectorAll(secondSelector))
+          .map(e => e.innerText)
+          .reduce((acc, v, i) => {
+            let j = Math.floor(i / 2);
+            if (!acc[j]) acc[j] = [];
+            acc[j].push(v.trim().replace(/\n/g, '\\n'));
+            return acc;
+          }, []);
+      return JSON.stringify(list);
+    },
+    inputOutputFirstSelector,
+    inputOutputSecondSelector,
+  );
   await subPage.close();
   return [taskTitle, taskUrl, inputOutput];
 }

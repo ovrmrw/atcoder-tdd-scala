@@ -10,9 +10,12 @@ import org.scalatest.time.SpanSugar._
 /*
   // script for getting inputs and outputs from the task pages of the AtCoder.
   (function() {
-    var selector = 'span.lang-en div.div-btn-copy + pre';
+    var firstSelector = 'div#task-statement span.lang-en div.div-btn-copy + pre';
+    var secondSelector = 'div#task-statement div.div-btn-copy + pre';
     var i = document.createElement('input');
-    i.value = JSON.stringify(Array.from(document.querySelectorAll(selector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []));
+    var list = Array.from(document.querySelectorAll(firstSelector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []);
+    if (list.length === 0) list = Array.from(document.querySelectorAll(secondSelector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []);
+    i.value = JSON.stringify(list);
     document.body.append(i); document.querySelector('body > input:last-child').select();
     if (document.execCommand('copy')) { document.querySelector('body > input:last-child').remove(); alert('copied to clipboard.\n' + i.value); }
   })();
@@ -50,7 +53,7 @@ class ABC127Test extends FunSpec with TimeLimitedTests {
       """
         |[["4 2\\n1 3\\n2 4","2"],["10 3\\n3 6\\n5 7\\n6 9","1"],["100000 1\\n1 100000","100000"]]
       """.stripMargin
-    val customParams = List()
+    val customParams = List(("4 2\n1 2\n3 4", "0"))
     testWrapper("C", ABC127_C.Main.solve, json, customParams)
   }
 
@@ -59,7 +62,7 @@ class ABC127Test extends FunSpec with TimeLimitedTests {
       """
         |[["3 2\\n5 1 4\\n2 3\\n1 5","14"],["10 3\\n1 8 5 7 100 4 52 33 13 5\\n3 10\\n4 30\\n1 4","338"],["3 2\\n100 100 100\\n3 99\\n3 99","300"],["11 3\\n1 1 1 1 1 1 1 1 1 1 1\\n3 1000000000\\n4 1000000000\\n3 1000000000","10000000001"]]
       """.stripMargin
-    val customParams = List()
+    val customParams = List(("3 1\n1 1 1\n3 10", "30"))
     testWrapper("D", ABC127_D.Main.solve, json, customParams)
   }
 

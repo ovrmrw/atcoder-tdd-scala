@@ -10,9 +10,12 @@ import org.scalatest.time.SpanSugar._
 /*
   // script for getting inputs and outputs from the task pages of the AtCoder.
   (function() {
-    var selector = 'span.lang-en div.div-btn-copy + pre';
+    var firstSelector = 'div#task-statement span.lang-en div.div-btn-copy + pre';
+    var secondSelector = 'div#task-statement div.div-btn-copy + pre';
     var i = document.createElement('input');
-    i.value = JSON.stringify(Array.from(document.querySelectorAll(selector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []));
+    var list = Array.from(document.querySelectorAll(firstSelector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []);
+    if (list.length === 0) list = Array.from(document.querySelectorAll(secondSelector)).map(e => e.innerText).reduce((acc, v, i) => { let j = Math.floor(i / 2); if (!acc[j]) acc[j] = []; acc[j].push(v.trim().replace(/\n/g, '\\n')); return acc }, []);
+    i.value = JSON.stringify(list);
     document.body.append(i); document.querySelector('body > input:last-child').select();
     if (document.execCommand('copy')) { document.querySelector('body > input:last-child').remove(); alert('copied to clipboard.\n' + i.value); }
   })();

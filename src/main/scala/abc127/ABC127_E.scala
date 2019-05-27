@@ -16,7 +16,8 @@ object Main {
   }
 
   def solve(sc: Scanner): String = {
-    "fakeOutput"
+    // Write your code here and return the answer as string
+    "answer"
   }
 
   private def debug(x: Any): Unit = {
