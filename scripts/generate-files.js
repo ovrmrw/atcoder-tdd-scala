@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { makeDir } = require('./helpers');
 
 const [, , _category = '', _contest = ''] = process.argv;
 
@@ -15,11 +14,17 @@ const contest = _contest.toUpperCase();
 
 const templateDir = path.join(process.cwd(), 'templates/atcoder');
 
-const taskDir = path.join(process.cwd(), 'src/main/scala', category);
-const testDir = path.join(process.cwd(), 'src/test/scala', category);
+const taskDir = path.join(process.cwd(), 'src/main/scala', category.replace(/\./g, '/'));
+const testDir = path.join(process.cwd(), 'src/test/scala', category.replace(/\./g, '/'));
 
 const taskTeamplateSrc = fs.readFileSync(path.join(templateDir, 'task.scala.template')).toString();
 const testTeamplateSrc = fs.readFileSync(path.join(templateDir, 'test.scala.template')).toString();
+
+function makeDir(path) {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+}
 
 function createTaskFiles() {
   makeDir(taskDir);
@@ -34,7 +39,9 @@ function createTaskFiles() {
     .forEach(({ path, src }) => {
       if (!fs.existsSync(path)) {
         fs.writeFileSync(path, src);
-        console.log('generated:', path);
+        console.log('file generated:', path);
+      } else {
+        console.log('file exists:', path);
       }
     });
 }
@@ -50,7 +57,9 @@ function createTestFile() {
   const _path = path.join(testDir, `${contest}Test.scala`);
   if (!fs.existsSync(_path)) {
     fs.writeFileSync(_path, src);
-    console.log('generated:', _path);
+    console.log('file generated:', _path);
+  } else {
+    console.log('file exists:', _path);
   }
 }
 

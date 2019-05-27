@@ -44,20 +44,18 @@ val json =
 
 ## ファイル生成
 
-### Setup
-
-```
-$ npm install
-```
-
-### Generate
-
 ```
 $ npm run generate -- {package} {contest}
 ```
 
-(例: AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき)
+(例) AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき
 
 ```
 $ npm run generate -- abc abc128
+```
+
+`package` を階層構造にすることも可能
+
+```
+$ npm run generate -- hoge.foo.bar abc128
 ```

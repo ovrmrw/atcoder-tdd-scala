@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "pregenerate": "npm install",
     "generate": "node scripts/generate-files"
   },
   "repository": {
