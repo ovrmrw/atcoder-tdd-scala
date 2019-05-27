@@ -4,7 +4,27 @@ AtCoder の問題を Scala で解くときの TDD テンプレート
 
 ---
 
-## 実装
+## ファイル生成
+
+```
+$ npm run generate -- {package} {contest}
+```
+
+(例) AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき
+
+```
+$ npm run generate -- abc abc128
+```
+
+`package` を階層構造にすることも可能
+
+```
+$ npm run generate -- hoge.foo.bar abc128
+```
+
+---
+
+## 実装ファイル
 
 ### main メソッド
 
@@ -14,7 +34,9 @@ AtCoder の問題を Scala で解くときの TDD テンプレート
 
 メソッドのシグニチャは必ず `def solve(sc: Scanner): String` となるようにする。
 
-## テスト
+---
+
+## テストファイル
 
 ### testWrapper メソッド
 
@@ -39,23 +61,3 @@ val json =
 ```
 
 の JSON 文字列部分は、テストファイルの上部にある JavaScript を実行して取得した値をペーストする。
-
----
-
-## ファイル生成
-
-```
-$ npm run generate -- {package} {contest}
-```
-
-(例) AtCoder Beginner Contest 128 に関する実装ファイルとテストファイルを生成するとき
-
-```
-$ npm run generate -- abc abc128
-```
-
-`package` を階層構造にすることも可能
-
-```
-$ npm run generate -- hoge.foo.bar abc128
-```
