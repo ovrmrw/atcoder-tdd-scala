@@ -25,13 +25,13 @@ $ npm run generate -- https://atcoder.jp/contests/abc128
 そのためクローリング時に使用するユーザー名とパスワードを下記のようにして環境変数に登録しておく必要がある。
 
 ```
-$ export ATCODER={username},{password}
+$ export ATCODER_AUTH={username},{password}
 ```
 
 (例) ユーザー名が `taro`、パスワードが `12345678` のとき
 
 ```
-$ export ATCODER=taro,12345678
+$ export ATCODER_AUTH=taro,12345678
 ```
 
 これらの情報が取得できないときはログインせずにデータを収集することを試みる。

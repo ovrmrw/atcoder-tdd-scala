@@ -28,7 +28,7 @@ import org.scalatest.time.SpanSugar._
   * export LOCAL_DEBUG=1 && sbt "~testOnly *abc127.ABC127Test -- -z A"
   */
 class ABC127Test extends FunSpec with TimeLimitedTests {
-  val timeLimit = 2000 millis
+  override def timeLimit = 2000 millis
 
   describe("A") {
     val json =

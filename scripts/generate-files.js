@@ -1,19 +1,15 @@
+const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const assert = require('assert');
 const { URL } = require('url');
 const puppeteer = require('puppeteer');
 
-const [atcoderUsername, atcoderPassword] = (process.env.ATCODER || ',').split(',').map(s => s.trim());
-if (!atcoderUsername) {
-  console.log('(!) username is not given.');
-}
-if (!atcoderPassword) {
-  console.log('(!) password is not given.');
-}
+const [username, password] = (process.env.ATCODER_AUTH || process.env.ATCODER || ',').split(',').map(s => s.trim());
+if (username) console.log('Username is given.');
+if (password) console.log('Password is given.');
 
 const [, , _url = ''] = process.argv;
-assert(/atcoder\.jp\/contests/.test(_url), 'An AtCoder contest page url must be given.');
+assert(/atcoder\.jp\/contests/.test(_url), 'AtCoder contest page url must be passed.');
 
 const taskTopPageUrl = getTaskUrl(_url);
 console.log({ taskTopPageUrl });
@@ -55,9 +51,9 @@ async function main() {
       const _path = path.join(taskDir, `${taskPackage}.scala`);
       if (!fs.existsSync(_path)) {
         fs.writeFileSync(_path, src);
-        console.log('file generated:', _path);
+        console.log('File generated:', _path);
       } else {
-        console.log('file exists:', _path);
+        console.log('File exists:', _path);
       }
     });
   };
@@ -91,9 +87,9 @@ async function main() {
     const _path = path.join(testDir, `${testClass}.scala`);
     if (!fs.existsSync(_path)) {
       fs.writeFileSync(_path, src);
-      console.log('file generated:', _path);
+      console.log('File generated:', _path);
     } else {
-      console.log('file exists:', _path);
+      console.log('File exists:', _path);
     }
   };
   generateTestFile();
@@ -102,18 +98,12 @@ async function main() {
 async function crawl() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  if (atcoderUsername && atcoderPassword) {
+  if (username && password) {
     console.log('Getting data with login ...');
     await page.goto('https://atcoder.jp/login?continue=' + encodeURIComponent(taskTopPageUrl));
-    await page.evaluate(
-      (username, password) => {
-        document.querySelector('input#username').value = username;
-        document.querySelector('input#password').value = password;
-        document.querySelector('button#submit').click();
-      },
-      atcoderUsername,
-      atcoderPassword,
-    );
+    await page.type('input#username', username);
+    await page.type('input#password', password);
+    await page.click('button#submit');
     await page.waitForSelector('div#main-container');
   } else {
     console.log('Getting data without login ...');
@@ -123,9 +113,10 @@ async function crawl() {
     return Array.from(document.querySelectorAll(selector)).map(el => [el.text, el.href]);
   }, taskListSelector);
   console.log({ tasks });
-  const results = await Promise.all(
-    tasks.map(([taskTitle, taskUrl]) => getInputOutputFromTaskPage(browser, taskTitle, taskUrl)),
-  );
+  const results = [];
+  for (let [taskTitle, taskUrl] of tasks) {
+    results.push(await getInputOutputFromTaskPage(browser, taskTitle, taskUrl));
+  }
   console.log({ results });
   await browser.close();
   return results;
