@@ -4,7 +4,7 @@ import java.util.Scanner
 
 import common.helpers.{mockScanner, runCustomTest}
 import org.scalatest.FunSpec
-import org.scalatest.concurrent.TimeLimitedTests
+import org.scalatest.concurrent.{Signaler, TimeLimits, ThreadSignaler}
 import org.scalatest.time.SpanSugar._
 
 /*
@@ -27,8 +27,9 @@ import org.scalatest.time.SpanSugar._
   * Or only the specific test case.
   * export LOCAL_DEBUG=1 && sbt "~testOnly *{{CATEGORY_PACKAGE}}.{{TEST_CLASS}} -- -z {{FIRST_TASK_NAME}}"
   */
-class {{TEST_CLASS}} extends FunSpec with TimeLimitedTests {
-  override def timeLimit = 2000 millis
+class {{TEST_CLASS}} extends FunSpec with TimeLimits {
+  implicit def threadSignaler: Signaler = ThreadSignaler
+  val timeout = 2000 millis
 
   {{DESCRIBES}}
 
@@ -36,7 +37,9 @@ class {{TEST_CLASS}} extends FunSpec with TimeLimitedTests {
     def test(description: String, input: String, output: String): Unit =
       it(description) {
         println(s"${this.suiteName}__${task}__$description")
-        assert(solver(mockScanner(input)) === output)
+        failAfter(timeout) {
+          assert(solver(mockScanner(input)) === output)
+        }
       }
 
     runCustomTest(test, json, customParams)

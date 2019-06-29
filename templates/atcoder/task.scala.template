@@ -8,16 +8,17 @@ package {{CATEGORY_PACKAGE}}.{{TASK_PACKAGE}}
 import java.util.Scanner
 
 object Main {
+
+  def solve(sc: Scanner): String = {
+    // Write your code here and return the answer as string
+    "answer"
+  }
+
   def main(args: Array[String]): Unit = {
     val sc = new Scanner(System.in)
     val writer = new java.io.PrintWriter(System.out)
     writer.println(solve(sc))
     writer.flush()
-  }
-
-  def solve(sc: Scanner): String = {
-    // Write your code here and return the answer as string
-    "answer"
   }
 
   private def debug(x: Any): Unit = {
