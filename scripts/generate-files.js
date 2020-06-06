@@ -15,8 +15,8 @@ const taskTopPageUrl = getTaskUrl(_url);
 console.log({ taskTopPageUrl });
 
 const templateDir = path.join(process.cwd(), 'templates/atcoder');
-const taskTeamplateSrc = fs.readFileSync(path.join(templateDir, 'task.scala.template')).toString();
-const testTeamplateSrc = fs.readFileSync(path.join(templateDir, 'test.scala.template')).toString();
+const taskTemplateSrc = fs.readFileSync(path.join(templateDir, 'task.scala.template')).toString();
+const testTemplateSrc = fs.readFileSync(path.join(templateDir, 'test.scala.template')).toString();
 
 const taskListSelector = 'div#main-container table tbody tr td:nth-child(2) a';
 const inputOutputFirstSelector = 'div#task-statement span.lang-en div.div-btn-copy + pre';
@@ -44,7 +44,7 @@ async function main() {
         .split('/')
         .reverse()[0]
         .toUpperCase();
-      const src = taskTeamplateSrc
+      const src = taskTemplateSrc
         .replace(new RegExp(`{{CATEGORY_PACKAGE}}`, 'g'), category)
         .replace(new RegExp(`{{TASK_PACKAGE}}`, 'g'), taskPackage)
         .replace(new RegExp(`{{TASK_TITLE}}`, 'g'), title);
@@ -79,7 +79,7 @@ async function main() {
       })
       .map(s => s.trim())
       .join('\n\n  ');
-    const src = testTeamplateSrc
+    const src = testTemplateSrc
       .replace(new RegExp(`{{DESCRIBES}}`), describes)
       .replace(new RegExp(`{{CATEGORY_PACKAGE}}`, 'g'), category)
       .replace(new RegExp(`{{TEST_CLASS}}`, 'g'), testClass)
